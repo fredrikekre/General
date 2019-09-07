@@ -3,13 +3,20 @@ language: julia
 os:
   - linux
 julia:
-  - 1.0
-  # - 1.1
+  - "1.0"
+  - "1.1"
+  - "1.2"
   # - nightly
 # matrix:
 #   allow_failures:
 #     - julia: nightly
 script: julia .test/runtests.jl
+after_success:
+  # - exit 0 # Administrators: uncomment this line to disable all automerging
+  - if [ "$TRAVIS_JULIA_VERSION" != "1.2" ]; then exit; fi
+  - julia --project=.test/AutoMerge -e 'using Pkg; Pkg.instantiate()'
+  - julia --project=.test/AutoMerge -e 'using Pkg; Pkg.test("AutoMerge")' && julia --project=.test/AutoMerge -e 'ENV["JULIA_DEBUG"] = "AutoMerge"; using AutoMerge; using Dates; AutoMerge.travis(merge_new_packages=true, merge_new_versions=true, new_package_waiting_period=Hour(72), new_version_waiting_period=Minute(15), registry="JuliaRegistries/General", authorized_authors=["JuliaRegistrator"])'
+
 branches:
   only:
     - master
