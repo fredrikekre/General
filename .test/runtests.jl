@@ -1,4 +1,3 @@
-
 using Test, Pkg
 using Base: UUID
 using Pkg.Types: VersionRange
@@ -8,7 +7,11 @@ import Pkg.TOML
 @testset "(Registry|Package|Versions|Deps|Compat).toml" begin
     reg = TOML.parsefile("Registry.toml")
     reguuids = Set{UUID}(UUID(x) for x in keys(reg["packages"]))
-    stdlibuuids = Set{UUID}(x for x in keys(Pkg.Types.gather_stdlib_uuids()))
+    if VERSION >= v"1.1.0"
+        stdlibuuids = Set{UUID}(x for x in keys(Pkg.Types.stdlib()))
+    else
+        stdlibuuids = Set{UUID}(x for x in keys(Pkg.Types.gather_stdlib_uuids()))
+    end
     alluuids = reguuids ∪ stdlibuuids
 
     # Test that each entry in Registry.toml has a corresponding Package.toml
