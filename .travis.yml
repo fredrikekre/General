@@ -15,7 +15,7 @@ after_success:
   # - exit 0 # Administrators: uncomment this line to disable all automerging
   - if [ "$TRAVIS_JULIA_VERSION" != "1.2" ]; then exit; fi
   - julia --project=.test/AutoMerge -e 'using Pkg; Pkg.instantiate()'
-  - julia --project=.test/AutoMerge -e 'using Pkg; Pkg.test("AutoMerge")' && julia --project=.test/AutoMerge -e 'ENV["JULIA_DEBUG"] = "AutoMerge"; using AutoMerge; using Dates; AutoMerge.travis(merge_new_packages=true, merge_new_versions=true, new_package_waiting_period=Minute(1), new_version_waiting_period=Minute(1), registry="JuliaRegistries/General", authorized_authors=["JuliaRegistrator", "DilumAluthge", "fredrikekre", "StefanKarpinski", "KristofferC"])'
+  - julia --project=.test/AutoMerge -e 'using Pkg; Pkg.test("AutoMerge")' && julia --project=.test/AutoMerge -e 'ENV["JULIA_DEBUG"] = "AutoMerge"; using AutoMerge; using Dates; AutoMerge.travis(merge_new_packages=true, merge_new_versions=true, new_package_waiting_period=Minute(1), new_version_waiting_period=Minute(1), registry="JuliaRegistries/General", authorized_authors=["JuliaRegistrator", "DilumAluthge", "fredrikekre", "StefanKarpinski", "KristofferC", "oxinabox"])'
 
 branches:
   only:
